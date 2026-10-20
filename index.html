@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>20/10 — Team Quang Tuyên</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Be+Vietnam+Pro:wght@400;500;700&display=swap">
+<style>
+:root{--rose:#f0689a;--pink:#d9628d;--cream:#fff;--ink:#6b2a45;--gold:#d94f86;--soft:#8a4a62;
+--serif:'Playfair Display',Georgia,serif;--sans:'Be Vietnam Pro',system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:inherit;margin:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink);background:radial-gradient(ellipse at 15% 10%,#ffe3ec 0,transparent 55%),radial-gradient(ellipse at 90% 90%,#ffd0e0 0,transparent 55%),#fff0f5;-webkit-tap-highlight-color:transparent}
+#petals{position:fixed;inset:0;pointer-events:none;z-index:1}
+.petal{position:absolute;top:-30px;opacity:.28;filter:saturate(.55) blur(.6px);animation:fall linear infinite;will-change:transform}
+@keyframes fall{to{transform:translate3d(var(--dx),110vh,0) rotate(540deg)}}
+.scene{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 22px 70px;opacity:0;visibility:hidden;transform:translateY(24px) scale(.98);transition:opacity .9s,transform .9s,visibility .9s;z-index:2;overflow-y:auto}
+.scene.on{opacity:1;visibility:visible;transform:none}
+.kicker{font-size:.8rem;letter-spacing:.35em;text-transform:uppercase;color:var(--pink);margin-bottom:14px}
+h1,h2{font-family:var(--serif);line-height:1.12}
+h1{font-size:clamp(2.4rem,9vw,5rem);font-weight:800;text-shadow:0 4px 24px rgba(240,104,154,.25)}
+h1 em,h2 em{font-style:italic;color:var(--gold)}
+h2{font-size:clamp(1.6rem,5.5vw,2.8rem);font-weight:600;margin-bottom:14px}
+p.msg{max-width:620px;font-size:clamp(.95rem,2.6vw,1.12rem);line-height:1.75;color:var(--soft);margin:8px auto}
+.slogan{font-family:var(--serif);font-style:italic;font-size:clamp(1rem,3vw,1.35rem);max-width:640px;margin-top:22px;color:var(--gold);line-height:1.5}
+.badge{display:inline-block;margin-top:22px;padding:8px 18px;border:1px solid rgba(240,104,154,.4);border-radius:99px;font-size:.78rem;letter-spacing:.2em;backdrop-filter:blur(6px);background:rgba(255,255,255,.6);color:var(--pink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:700px;margin:16px auto 6px}
+.chip{padding:8px 14px;border-radius:99px;background:rgba(255,255,255,.75);border:1px solid rgba(240,104,154,.25);color:var(--ink);font-size:.88rem;backdrop-filter:blur(6px);opacity:0;transform:translateY(12px) scale(.9)}
+.chip small{display:block;font-size:.66rem;color:var(--pink);letter-spacing:.08em}
+.scene.on .chip{animation:pop .6s forwards;animation-delay:calc(var(--i)*.12s + .5s)}
+@keyframes pop{to{opacity:1;transform:none}}
+.card{background:rgba(255,255,255,.7);border:1px solid rgba(240,104,154,.25);border-radius:22px;padding:22px 20px;max-width:640px;backdrop-filter:blur(10px);box-shadow:0 16px 40px rgba(240,104,154,.18)}
+.sign{margin-top:18px;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:1.1rem}
+.flower{font-size:3rem;animation:sway 3s ease-in-out infinite;display:inline-block}
+@keyframes sway{50%{transform:rotate(8deg) scale(1.1)}}
+/* sphere */
+#sphereWrap{position:relative;width:min(92vw,560px);height:min(62vh,520px);touch-action:none;cursor:grab;margin-top:6px}
+#sphereWrap:active{cursor:grabbing}
+.ph{position:absolute;left:50%;top:50%;width:84px;height:104px;margin:-52px 0 0 -42px;border-radius:12px;overflow:hidden;border:3px solid #fff;box-shadow:0 8px 20px rgba(217,98,141,.35);background:linear-gradient(145deg,var(--c1),var(--c2));display:flex;align-items:flex-end;justify-content:center;will-change:transform}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ph span{position:relative;font-size:.6rem;font-weight:700;padding:14px 4px 5px;width:100%;text-align:center;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff}
+.ph b{position:absolute;top:30%;left:0;right:0;font-family:var(--serif);font-size:2rem;color:rgba(255,255,255,.9)}
+.hint{font-size:.78rem;color:var(--pink);margin-top:6px}
+/* ui */
+#ui{position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;align-items:center;gap:10px;z-index:5}
+.btn{border:1px solid rgba(240,104,154,.35);background:rgba(255,255,255,.8);color:var(--ink);border-radius:99px;padding:8px 15px;font:500 .8rem var(--sans);cursor:pointer;backdrop-filter:blur(8px)}
+.btn:active{transform:scale(.95)}
+#dots{display:flex;gap:6px}
+#dots i{width:7px;height:7px;border-radius:50%;background:rgba(240,104,154,.3);transition:.4s}
+#dots i.on{background:var(--gold);width:22px;border-radius:9px}
+#start{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(circle,#fff6f9,#ffd6e4);text-align:center;transition:opacity .8s,visibility .8s;padding:24px}
+#start.off{opacity:0;visibility:hidden}
+#start h2{font-size:2rem}
+#go{padding:14px 34px;font-size:1rem;background:var(--rose);border:0;color:#fff;font-weight:700;box-shadow:0 0 0 0 rgba(240,104,154,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 22px rgba(240,104,154,0)}}
+</style>
+</head>
+<body>
+<div id="petals"></div>
+
+<div id="start">
+  <div class="flower">🌷</div>
+  <h2>Một món quà nhỏ<br>gửi đến các <em>chị em</em></h2>
+  <p class="msg" style="font-size:.9rem">Từ các chàng trai Quang Tuyên</p>
+  <button class="btn" id="go">Chạm để mở quà 🎁</button>
+</div>
+
+<!-- 1. Mở đầu -->
+<section class="scene" data-t="7000">
+  <div class="kicker">Tháng Mười lại về…</div>
+  <h1>Team <em>Quang Tuyên</em><br>dayyyy! 🌹</h1>
+  <div class="slogan">“Khi đi mang nặng lời thề — Không 10 điểm Toán không về Tuyên Quang”</div>
+  <div class="badge">HAPPY VIETNAMESE WOMEN’S DAY · 20/10</div>
+</section>
+
+<!-- 2. Giám thị hành lang -->
+<section class="scene" data-t="8500">
+  <div class="kicker">Giám thị hành lang</div>
+  <h2>Hai người gác cổng <em>tâm lý &amp; nhiệt huyết</h2>
+  <div class="chips">
+    <div class="chip" style="--i:0">Vương Linh<small>GIÁM THỊ HÀNH LANG</small></div>
+    <div class="chip" style="--i:1">Mai Trang<small>GIÁM THỊ HÀNH LANG</small></div>
+  </div>
+  <p class="msg">Cảm ơn hai người vì luôn dịu dàng, nhiệt tình và giữ cho cả hành lang đầy tiếng cười. Có hai người, mùa thi này chẳng ai thấy lo lắng nữa! Chúc chị Linh và chị Trang luôn xinh đẹp, tự tin và rực rỡ 💐</p>
+</section>
+
+<!-- 3. Giám thị phòng thi -->
+<section class="scene" data-t="8500">
+  <div class="kicker">Giám thị phòng thi</div>
+  <h2>Người dẫn đường <em>của các sĩ tử</em></h2>
+  <div class="chips">
+    <div class="chip" style="--i:0">Bảo Như<small>GIÁM THỊ PHÒNG THI</small></div>
+  </div>
+  <p class="msg">Cảm ơn chị Như vì đã luôn đồng hành, dẫn dắt và giúp đỡ cả team trong từng bước chân. Chúc chị Như mọi điều tốt đẹp nhất, mỗi ngày đều vui, đều được yêu thương và luôn toả sáng theo cách riêng của mình 🌸</p>
+</section>
+
+<!-- 4. Sĩ tử -->
+<section class="scene" data-t="11000">
+  <div class="kicker">Các sĩ tử</div>
+  <h2>Những nhân vật chính <em>rạng rỡ nhất</em></h2>
+  <div class="chips" id="situ"></div>
+  <p class="msg">Mỗi bạn một cá tính, một màu sắc, nhưng ghép lại thành một tập thể thật đáng nhớ. Chúc các bạn luôn xinh tươi, học giỏi, thi đâu đỗ đó và có thật nhiều điểm 10 — không chỉ môn Toán! 🌷</p>
+</section>
+
+<!-- 5. Từ 4 chàng trai -->
+<section class="scene" data-t="9500">
+  <div class="kicker">Lời nhắn từ 4 chàng trai</div>
+  <div class="card">
+    <h2 style="font-size:1.7rem">Gửi 14 bông hoa của <em>Quang Tuyên</em> 💗</h2>
+    <p class="msg">Cảm ơn các bạn vì đã làm cho team trở nên nhiều màu sắc, vui vẻ và đáng nhớ hơn. Hôm nay là ngày của các bạn: hãy cười thật tươi, vui thật nhiều và nhận thật nhiều yêu thương nhé!</p>
+    <div class="sign"> Từ Hồng Phong, Đình Phong, Tạ Quang, Việt Huy </div>
+  </div>
+</section>
+
+<!-- 6. Cầu ảnh -->
+<section class="scene" data-t="0" id="finale">
+  <div class="kicker">Một tập thể, thật nhiều yêu thương</div>
+  <h2 style="margin-bottom:0">Quang Tuyên <em>forever</em> 🌍</h2>
+  <div id="sphereWrap"></div>
+  <div class="hint">Kéo để xoay quả cầu kỷ niệm · Chúc mừng 20/10!</div>
+</section>
+
+<div id="ui">
+  <button class="btn" id="prev">‹</button>
+  <div id="dots"></div>
+  <button class="btn" id="next">›</button>
+  <button class="btn" id="replay">↻ Xem lại</button>
+  <button class="btn" id="mus">♪ Nhạc</button>
+</div>
+<audio id="bgm" loop preload="none"></audio>
+
+<script>
+/* ====== CHỈNH SỬA Ở ĐÂY ====== */
+// Link nhạc (file .mp3 để cùng thư mục repo, vd: "nhac.mp3"). Để trống = không phát nhạc.
+const MUSIC_SRC = "music.mp3";
+// Ảnh quả cầu: điền đường dẫn ảnh vào "src" (vd: "img/linh.jpg"). Để trống = hiện thẻ màu có tên.
+const PHOTOS = [
+  {name:"",src:"img/anh1.jpg"},{name:"",src:"img/anh2.jpg"},{name:"",src:"img/anh3.jpg"},
+  {name:"",src:"img/anh4.jpg"},{name:"",src:"img/anh5.jpg"},{name:"",src:"img/anh6.jpg"},
+  {name:"",src:"img/anh7.jpg"},{name:"",src:"img/anh8.jpg"},{name:"",src:"img/anh9.jpg"},
+  {name:"",src:"img/anh10.jpg"},{name:"",src:"img/anh11.jpg"},{name:"",src:"img/anh12.jpg"},
+  {name:"",src:"img/anh13.jpg"},{name:"",src:"img/anh14.jpg"},
+  {name:"",src:"img/anh15.jpg"},{name:"",src:"img/anh16.jpg"},{name:"",src:"img/anh17.jpg"},{name:"",src:"img/anh18.jpg"},
+  {name:"",src:"img/anh22.jpg"},{name:"",src:"img/anh23.jpg"}
+];
+const SITU = [["Vân Khánh","10 Anh"],["Hà Anh","10 Địa"],["Hồng Hạnh","10 Văn"],["Hạnh Diệp","10 Trung"],["Phương Linh","10 Hàn"],["Thanh Trúc","10 Sinh"],["Khánh Ngọc","10 Địa"],["Thục Quyên","10 Sử"],["Thảo Nguyên","10 Sử"],["Mai Linh","10 Văn"],["Ngọc Anh","10 Nhật"]];
+/* ============================== */
+
+const $=s=>document.querySelector(s), scenes=[...document.querySelectorAll('.scene')];
+$('#situ').innerHTML=SITU.map((p,i)=>`<div class="chip" style="--i:${i}">${p[0]}<small>${p[1].toUpperCase()}</small></div>`).join('');
+
+// cánh hoa rơi
+const pet=$('#petals'), E=['🌸','🌷','🌹','💮','🌺'];
+for(let i=0;i<16;i++){const s=document.createElement('span');s.className='petal';s.textContent=E[i%E.length];
+s.style.left=Math.random()*100+'vw';s.style.fontSize=(10+Math.random()*10)+'px';
+s.style.setProperty('--dx',(Math.random()*160-80)+'px');s.style.animationDuration=(9+Math.random()*10)+'s';s.style.animationDelay=(-Math.random()*18)+'s';pet.appendChild(s)}
+
+// điều hướng
+const dots=$('#dots');dots.innerHTML=scenes.map(()=>'<i></i>').join('');
+let cur=-1,timer;
+function show(n){n=Math.max(0,Math.min(scenes.length-1,n));cur=n;
+scenes.forEach((s,i)=>s.classList.toggle('on',i===n));
+[...dots.children].forEach((d,i)=>d.classList.toggle('on',i===n));
+clearTimeout(timer);const t=+scenes[n].dataset.t;if(t)timer=setTimeout(()=>show(n+1),t)}
+$('#next').onclick=()=>show(cur+1);$('#prev').onclick=()=>show(cur-1);$('#replay').onclick=()=>show(0);
+
+// nhạc
+const bgm=$('#bgm'),mus=$('#mus');let playing=false;
+if(MUSIC_SRC)bgm.src=MUSIC_SRC;
+function setMusic(on){if(!MUSIC_SRC){mus.textContent='♪ Chưa có nhạc';return}
+playing=on;on?bgm.play().catch(()=>{}):bgm.pause();mus.textContent=on?'🔊 Nhạc':'♪ Bật nhạc'}
+mus.onclick=()=>setMusic(!playing);
+$('#go').onclick=()=>{$('#start').classList.add('off');setMusic(true);show(0)};
+
+// quả cầu ảnh
+const wrap=$('#sphereWrap'),N=PHOTOS.length,pts=[],els=[];
+const pal=[['#ff7aa2','#c2457a'],['#ffb36b','#e0566b'],['#d68bff','#7a4dd6'],['#ff9ec7','#f0577f'],['#ffd27a','#e8806a']];
+PHOTOS.forEach((p,i)=>{
+ const y=1-2*(i+.5)/N,r=Math.sqrt(1-y*y),th=Math.PI*(1+Math.sqrt(5))*i;
+ pts.push([Math.cos(th)*r,y,Math.sin(th)*r]);
+ const d=document.createElement('div');d.className='ph';
+ d.style.setProperty('--c1',pal[i%5][0]);d.style.setProperty('--c2',pal[i%5][1]);
+ d.innerHTML=(p.src?`<img src="${p.src}" alt="${p.name}" draggable="false">`:`<b>${p.name.trim().split(' ').pop()[0]}</b>`)+`<span>${p.name}</span>`;
+ wrap.appendChild(d);els.push(d)});
+let ax=-.25,ay=0,vx=0,vy=.006,drag=false,lx=0,ly=0;
+function frame(){
+ if(!drag){ay+=vy;ax+=vx;vx*=.95;vy+=(.006-vy)*.02}
+ const R=Math.min(wrap.clientWidth,wrap.clientHeight)*.42,cx=Math.cos(ax),sx=Math.sin(ax),cy=Math.cos(ay),sy=Math.sin(ay);
+ pts.forEach((p,i)=>{
+  let x=p[0]*cy+p[2]*sy,z=-p[0]*sy+p[2]*cy,y=p[1]*cx-z*sx;z=p[1]*sx+z*cx;
+  const s=.55+.45*(z+1)/2;
+  els[i].style.transform=`translate3d(${x*R*1.25}px,${y*R}px,0) scale(${s})`;
+  els[i].style.zIndex=Math.round((z+1)*50);els[i].style.opacity=.35+.65*(z+1)/2});
+ requestAnimationFrame(frame)}
+frame();
+wrap.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;wrap.setPointerCapture(e.pointerId)});
+wrap.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;ay+=dx*.008;ax-=dy*.008;vy=dx*.008;vx=-dy*.008});
+['pointerup','pointercancel'].forEach(t=>wrap.addEventListener(t,()=>drag=false));
+</script>
+</body>
+</html>
